@@ -1,0 +1,59 @@
+name: Build Entre Nous desktop apps
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'desktop-v*'
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install --no-audit --no-fund --no-package-lock
+      - run: npm run dist:win
+      - uses: actions/upload-artifact@v4
+        with:
+          name: entre-nous-windows-portable-et-installateur
+          path: release/*
+          if-no-files-found: error
+          retention-days: 14
+
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install --no-audit --no-fund --no-package-lock
+      - run: npm run dist:linux
+      - uses: actions/upload-artifact@v4
+        with:
+          name: entre-nous-linux-appimage-deb
+          path: release/*
+          if-no-files-found: error
+          retention-days: 14
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install --no-audit --no-fund --no-package-lock
+      - run: npm run dist:mac
+      - uses: actions/upload-artifact@v4
+        with:
+          name: entre-nous-macos-universal
+          path: release/*
+          if-no-files-found: error
+          retention-days: 14
