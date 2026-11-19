@@ -1,0 +1,78 @@
+{
+  "name": "veil-desktop-p2p",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Veil: a private peer-to-peer desktop messenger for Windows, Linux and macOS, with multiple permanent links, calls and a neon cyberpunk look.",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "desktop": "electron .",
+    "dist": "electron-builder --publish never",
+    "dist:win": "electron-builder --win --x64 --publish never",
+    "dist:linux": "electron-builder --linux --x64 --publish never",
+    "dist:mac": "electron-builder --mac --universal --publish never"
+  },
+  "devDependencies": {
+    "electron": "^45.3.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "com.veil.p2p",
+    "productName": "Veil",
+    "artifactName": "Veil-${version}-${os}-${arch}.${ext}",
+    "directories": {
+      "output": "release",
+      "buildResources": "desktop/assets"
+    },
+    "files": [
+      "desktop/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "npmRebuild": false,
+    "win": {
+      "icon": "desktop/assets/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "artifactName": "Veil-${version}-win-setup.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Veil"
+    },
+    "portable": {
+      "artifactName": "Veil-${version}-win-portable.${ext}"
+    },
+    "linux": {
+      "icon": "desktop/assets/icon.png",
+      "category": "Network",
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "maintainer": "Veil <veil@example.com>",
+      "synopsis": "Private peer-to-peer messenger with permanent links and calls"
+    },
+    "mac": {
+      "icon": "desktop/assets/icon.icns",
+      "category": "public.app-category.social-networking",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "identity": null,
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
+    }
+  },
+  "author": {
+    "name": "Veil",
+    "email": "veil@example.com"
+  },
+  "homepage": "https://example.com/veil",
+  "license": "UNLICENSED"
+}

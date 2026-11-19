@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; img-src 'self' data: blob:; style-src 'self'; script-src 'self'; connect-src 'self' ws: wss:; media-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#05070d">
+  <title>Veil</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-row">
+        <div class="brand-mark"><span>V</span></div>
+        <div class="brand-copy"><strong>VEIL</strong><small>private p2p network</small></div>
+        <button id="settingsButton" class="icon-btn" title="Settings" aria-label="Settings">
+          <svg viewBox="0 0 24 24"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 8.96 4.6H9a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1Z"/></svg>
+        </button>
+      </div>
+
+      <div class="side-label">CONVERSATIONS</div>
+      <div id="sessionList" class="session-list"></div>
+      <button id="addConnection" class="add-connection">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        <span>New connection</span>
+      </button>
+
+      <div class="sidebar-bottom">
+        <div class="peer-card">
+          <div class="avatar" id="localAvatar">V</div>
+          <div class="peer-copy"><strong id="localName">You</strong><small>This device</small></div>
+          <span class="status-dot local-dot"></span>
+        </div>
+        <div class="connection-mini"><span id="connectionDot"></span><span id="connectionLabel">Offline</span></div>
+      </div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <div class="topbar-title">
+          <p class="eyebrow" id="topEyebrow">SECURE CHANNEL</p>
+          <h1 id="topTitle">Veil</h1>
+        </div>
+        <div class="top-actions">
+          <span id="topStatus" class="private-pill">P2P · AES-256</span>
+          <button id="audioCallButton" class="icon-btn call-icon" title="Audio call" aria-label="Audio call" disabled>
+            <svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+          </button>
+          <button id="videoCallButton" class="icon-btn call-icon" title="Video call" aria-label="Video call" disabled>
+            <svg viewBox="0 0 24 24"><path d="m23 7-7 5 7 5V7Z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          </button>
+          <button id="topSettings" class="icon-btn" title="Settings" aria-label="Settings">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <section id="lobbyView" class="lobby-view">
+        <div class="lobby-card">
+          <div class="brand-orb"><span>V</span></div>
+          <p class="eyebrow">WELCOME TO THE VEIL</p>
+          <h2>Private channels, direct to the edge.</h2>
+          <p class="intro">Create a permanent link once and share it with someone you trust. Veil keeps every conversation alive in its own encrypted peer-to-peer tunnel, reconnects automatically, and never stores your messages on a server.</p>
+          <div class="session-actions">
+            <button id="createLink" class="primary-btn">Create a permanent link <span>→</span></button>
+            <div class="join-box">
+              <label for="inviteCode">I received a link code</label>
+              <div class="join-row">
+                <input id="inviteCode" maxlength="42" placeholder="ABCD-EFGH-JKLM-NPQR-STUV-WXYZ-2345-6789-AB" autocomplete="off" spellcheck="false">
+                <button id="joinLink" class="secondary-btn">Connect</button>
+              </div>
+            </div>
+          </div>
+          <p id="lobbyStatus" class="feedback" aria-live="polite">Configure the rendezvous service in Settings to get started.</p>
+        </div>
+        <div class="privacy-note">
+          <span class="privacy-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+          </span>
+          <div><strong>Your conversations never leave your devices.</strong><p>The rendezvous service only relays the technical handshake needed to open a direct connection. It never receives your messages, calls, photos or files.</p></div>
+        </div>
+      </section>
+
+      <section id="waitingView" class="waiting-view" hidden>
+        <div class="waiting-card">
+          <div class="waiting-orb" id="waitingAvatar">V</div>
+          <p class="eyebrow">PERMANENT LINK</p>
+          <h2 id="waitingTitle">Waiting for the other side…</h2>
+          <p id="waitingSubtitle">This link is permanent. Share it once through a private channel, then leave Veil running. It will reconnect on its own, forever.</p>
+          <div class="invite-code-row">
+            <code id="inviteCodeDisplay">ABCD-EFGH-JKLM-NPQR-STUV-WXYZ-2345-6789-AB</code>
+            <button id="copyInvite" class="secondary-btn">Copy</button>
+          </div>
+          <p id="waitingStatus" class="feedback">Connecting to the rendezvous service…</p>
+          <p id="waitingHint" class="feedback" hidden></p>
+          <div class="waiting-actions">
+            <button id="cancelWaiting" class="text-btn">Manage this link</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="chatView" class="chat-view" hidden>
+        <div class="chat-heading">
+          <div class="online-avatar" id="chatPartnerAvatar">V</div>
+          <div class="chat-heading-copy">
+            <strong id="chatPartnerName">Conversation</strong>
+            <small><span class="online-dot"></span><span id="chatPartnerStatus">Connected directly</span></small>
+          </div>
+          <div class="secure-mark">
+            <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            <span>End-to-end encrypted</span>
+          </div>
+        </div>
+        <div id="messages" class="messages" aria-live="polite"></div>
+        <div class="composer-area">
+          <div id="attachmentPreview" class="attachment-preview" hidden><span id="attachmentName"></span><button id="removeAttachment" class="text-btn">Remove</button></div>
+          <div class="composer">
+            <button id="attachButton" class="tool-btn" title="Attach an image" aria-label="Attach an image">
+              <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+            <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+            <textarea id="messageInput" rows="1" maxlength="4000" placeholder="Write a message… (Enter to send)"></textarea>
+            <button id="emojiButton" class="tool-btn" title="Emojis" aria-label="Emojis">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0M9 9.5h.01M15 9.5h.01"/></svg>
+            </button>
+            <button id="sendButton" class="send-btn" title="Send" aria-label="Send">
+              <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7Z"/><path d="M22 2 11 13"/></svg>
+            </button>
+            <div id="emojiPicker" class="emoji-picker" hidden>
+              <div class="picker-head"><strong>Emojis</strong><button id="closeEmoji" class="text-btn" aria-label="Close">×</button></div>
+              <div id="emojiGrid" class="emoji-grid"></div>
+              <button id="addEmojiFromPicker" class="text-btn">+ Add a custom emoji</button>
+            </div>
+          </div>
+          <div class="composer-foot">Enter to send · Shift + Enter for a new line</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="callOverlay" class="call-overlay" hidden>
+    <div class="call-card">
+      <div class="call-glow"></div>
+      <video id="remoteVideo" class="remote-video" autoplay playsinline hidden></video>
+      <video id="localVideo" class="local-video" autoplay playsinline muted hidden></video>
+      <div class="call-identity">
+        <div class="call-avatar" id="callAvatar">V</div>
+        <h2 id="callTitle">Audio call</h2>
+        <p id="callSubtitle">Ringing…</p>
+        <div id="callTimer" class="call-timer">00:00</div>
+      </div>
+      <audio id="remoteAudio" autoplay></audio>
+      <div class="call-actions">
+        <button id="callMute" class="call-btn" title="Mute" hidden>
+          <svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg>
+          <span>Mute</span>
+        </button>
+        <button id="callCamera" class="call-btn" title="Camera" hidden>
+          <svg viewBox="0 0 24 24"><path d="m23 7-7 5 7 5V7Z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          <span>Camera</span>
+        </button>
+        <button id="callAccept" class="call-btn accept" hidden>
+          <svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+          <span>Accept</span>
+        </button>
+        <button id="callDecline" class="call-btn decline" hidden>
+          <svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+          <span>Decline</span>
+        </button>
+        <button id="callHangup" class="call-btn decline" title="Hang up" hidden>
+          <svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+          <span>Hang up</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="settingsModal" class="modal-backdrop" hidden>
+    <section class="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <header class="modal-head">
+        <div><p class="eyebrow">CONFIGURATION</p><h2 id="settingsTitle">Settings</h2></div>
+        <button id="closeSettings" class="icon-btn" aria-label="Close">×</button>
+      </header>
+
+      <section class="settings-section">
+        <h3>Your profile</h3>
+        <div class="profile-edit">
+          <div id="settingsAvatar" class="avatar large-avatar">V</div>
+          <div class="profile-controls">
+            <label for="displayName">Display name</label>
+            <input id="displayName" maxlength="32" placeholder="Your name or nickname">
+            <div class="button-line">
+              <button id="saveProfile" class="secondary-btn">Save</button>
+              <label class="file-button" for="avatarInput">Change picture</label>
+              <input id="avatarInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+            </div>
+          </div>
+        </div>
+        <p id="profileFeedback" class="feedback"></p>
+      </section>
+
+      <section class="settings-section">
+        <h3>Permanent links</h3>
+        <p class="muted">Every link stays valid forever and can run at the same time as the others. Each one is a separate encrypted tunnel.</p>
+        <div id="connectionsList" class="connections-list"></div>
+      </section>
+
+      <section class="settings-section">
+        <h3>Network</h3>
+        <p class="muted">Address of the small service that only exchanges connection handshakes between your apps.</p>
+        <label for="signalUrl">Rendezvous service (secure WebSocket)</label>
+        <input id="signalUrl" type="url" placeholder="wss://your-service.example">
+        <div class="turn-fields">
+          <label for="turnUrl">TURN relay (optional, for restrictive networks)</label>
+          <input id="turnUrl" type="text" placeholder="turns:turn.example.com:5349">
+          <div class="turn-row">
+            <input id="turnUsername" type="text" placeholder="TURN username">
+            <input id="turnCredential" type="password" placeholder="TURN password">
+          </div>
+        </div>
+        <div class="button-line">
+          <button id="saveSignal" class="secondary-btn">Save network settings</button>
+          <span id="signalFeedback" class="feedback"></span>
+        </div>
+        <p class="hint">The rendezvous service never stores conversations. STUN is used automatically; TURN is optional and only relays encrypted traffic when a direct path is impossible.</p>
+      </section>
+
+      <section class="settings-section">
+        <h3>Sounds &amp; notifications</h3>
+        <div class="toggle-row">
+          <div><strong>Sound alerts</strong><p class="muted">Play a tone for incoming messages and ring for calls.</p></div>
+          <label class="switch"><input id="soundEnabled" type="checkbox"><span></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><strong>Desktop notifications</strong><p class="muted">Show a system notification when a message arrives in the background.</p></div>
+          <label class="switch"><input id="notificationsEnabled" type="checkbox"><span></span></label>
+        </div>
+        <div class="button-line"><button id="testSound" class="secondary-btn">Test sound</button></div>
+      </section>
+
+      <section class="settings-section">
+        <h3>Your data</h3>
+        <p class="muted">Your profile, pictures and emojis are stored in a folder on this computer. You can back it up or copy it.</p>
+        <p id="accountFolderPath" class="hint"></p>
+        <div class="button-line"><button id="openAccountFolder" class="secondary-btn">Open folder</button></div>
+      </section>
+
+      <section class="settings-section">
+        <div class="section-title">
+          <div><h3>Custom emojis</h3><p class="muted">Import PNG, JPEG or WebP images and use <code>:name:</code> in your messages.</p></div>
+        </div>
+        <div class="emoji-form">
+          <input id="emojiName" maxlength="24" placeholder="emoji-name">
+          <label class="file-button" for="emojiInput">Choose an image</label>
+          <input id="emojiInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+          <button id="addEmoji" class="secondary-btn">Add</button>
+        </div>
+        <p id="emojiFeedback" class="feedback"></p>
+        <div id="customEmojiList" class="custom-emoji-list"></div>
+      </section>
+
+      <footer class="modal-foot">Veil · history, profile and emojis stay on this computer.</footer>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

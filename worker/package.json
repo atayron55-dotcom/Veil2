@@ -1,0 +1,13 @@
+{
+  "name": "veil-signal-worker",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Veil WebRTC rendezvous service on Cloudflare Workers. No conversation message passes through it.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
